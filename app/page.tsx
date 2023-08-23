@@ -7,9 +7,12 @@ import { Logo } from "@/components/Logo";
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
 import { ArrowRight } from "@/components/icons/ArrowRight";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [value, setValue] = useState("");
+  const [isInProgress, setIsInProgress] = useState(false);
+  const router = useRouter();
 
   return (
     <div className="flex flex-col justify-center items-center w-screen h-screen bg-main-background">
@@ -18,7 +21,6 @@ export default function Home() {
         style={{
           color: "var(--text-primary, #212121)",
           textAlign: "center",
-          /* header/large */
           fontFamily: "Lato",
           fontSize: "24px",
           fontStyle: "normal",
@@ -36,14 +38,18 @@ export default function Home() {
       />
       <Button
         label="Let's go"
-        onClick={() => alert("hello")}
+        onClick={handleButtonClick}
         icon={<ArrowRight />}
       />
     </div>
   );
 
-  function addNewItem() {
-    console.log("hello");
+  async function handleButtonClick() {
+    try {
+      setIsInProgress(true);
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      router.push("/edit/untitled");
+    } catch (error) {}
     addItem({ id: items.length.toString(), name: "new item" });
   }
 }
